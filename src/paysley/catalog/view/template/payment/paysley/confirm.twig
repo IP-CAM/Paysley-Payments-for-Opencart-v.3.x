@@ -1,0 +1,30 @@
+<form id="confirm-order-form" action="{{ action }}" method="post">
+<div class="buttons">
+  <div class="pull-right text-end"">
+    <button type="submit" id="button-confirm" class="btn btn-primary mt-2" style="">{{ button_confirm }}</button>
+  </div>
+</div>  
+</form>
+
+
+{% if payment_gateway_error is defined and payment_gateway_error is not empty %}
+  <script>
+    // Check if jQuery is loaded
+    if (typeof jQuery !== 'undefined') {
+      // Execute jQuery code after the document is ready
+      jQuery(document).ready(function($) {
+        $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i>{{ payment_gateway_error|escape }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+      });
+    }
+  </script>
+{% endif %}
+
+<script>
+  $(document).ready(function () {
+    $('form#confirm-order-form').submit(function (event) {
+      event.preventDefault();
+      $('#confirm-order-form #button-confirm').button('loading');
+      window.location.href = "{{ action }}";
+    })
+  })
+</script>
